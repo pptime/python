@@ -418,7 +418,7 @@ exit:
 }
 
 PyDoc_STRVAR(builtin_hash__doc__,
-"hash($module, obj, /)\n"
+"hash($module, obj, seed=None, /)\n"
 "--\n"
 "\n"
 "Return the hash value for the given object.\n"
@@ -427,7 +427,7 @@ PyDoc_STRVAR(builtin_hash__doc__,
 "reverse is not necessarily true.");
 
 #define BUILTIN_HASH_METHODDEF    \
-    {"hash", (PyCFunction)builtin_hash, METH_O, builtin_hash__doc__},
+    {"hash", (PyCFunction)builtin_hash, METH_VARARGS | METH_KEYWORDS, builtin_hash__doc__},
 
 PyDoc_STRVAR(builtin_hex__doc__,
 "hex($module, number, /)\n"

@@ -1414,9 +1414,16 @@ reverse is not necessarily true.
 [clinic start generated code]*/
 
 static PyObject *
-builtin_hash(PyObject *module, PyObject *obj)
+builtin_hash(PyObject *module, PyObject *args, PyObject *kwds)
 /*[clinic end generated code: output=237668e9d7688db7 input=58c48be822bf9c54]*/
 {
+    PyObject * obj, *seed = NULL;
+
+    static char *kwlist[] = {"object", "seed", 0};
+
+    if (!PyArg_ParseTupleAndKeywords(args, kwds, "O|O:hash",
+                                     kwlist, &obj, &seed))
+        return NULL;
     Py_hash_t x;
 
     x = PyObject_Hash(obj);
