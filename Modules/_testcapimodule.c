@@ -352,7 +352,7 @@ test_lazy_hash_inheritance(PyObject* self)
         return NULL;
     }
 
-    hash = PyObject_Hash(obj);
+    hash = PyObject_Hash(obj, 1);
     if ((hash == -1) && PyErr_Occurred()) {
         PyErr_Clear();
         PyErr_SetString(

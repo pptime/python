@@ -543,7 +543,7 @@ range_hash(rangeobject *r)
             PyTuple_SET_ITEM(t, 2, r->step);
         }
     }
-    result = PyObject_Hash(t);
+    result = PyObject_Hash(t, 1);
   end:
     Py_DECREF(t);
     return result;

@@ -352,7 +352,7 @@ tuplehash(PyTupleObject *v)
     x = 0x345678UL;
     p = v->ob_item;
     while (--len >= 0) {
-        y = PyObject_Hash(*p++);
+        y = PyObject_Hash(*p++, 1);
         if (y == -1)
             return -1;
         x = (x ^ y) * mult;

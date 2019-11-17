@@ -276,12 +276,12 @@ method_hash(PyMethodObject *a)
 {
     Py_hash_t x, y;
     if (a->im_self == NULL)
-        x = PyObject_Hash(Py_None);
+        x = PyObject_Hash(Py_None, 1);
     else
-        x = PyObject_Hash(a->im_self);
+        x = PyObject_Hash(a->im_self, 1);
     if (x == -1)
         return -1;
-    y = PyObject_Hash(a->im_func);
+    y = PyObject_Hash(a->im_func, 1);
     if (y == -1)
         return -1;
     x = x ^ y;

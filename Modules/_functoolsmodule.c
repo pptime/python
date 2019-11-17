@@ -786,7 +786,7 @@ infinite_lru_cache_wrapper(lru_cache_object *self, PyObject *args, PyObject *kwd
     PyObject *key = lru_cache_make_key(args, kwds, self->typed);
     if (!key)
         return NULL;
-    hash = PyObject_Hash(key);
+    hash = PyObject_Hash(key, 1);
     if (hash == -1) {
         Py_DECREF(key);
         return NULL;
@@ -844,7 +844,7 @@ bounded_lru_cache_wrapper(lru_cache_object *self, PyObject *args, PyObject *kwds
     key = lru_cache_make_key(args, kwds, self->typed);
     if (!key)
         return NULL;
-    hash = PyObject_Hash(key);
+    hash = PyObject_Hash(key, 1);
     if (hash == -1) {
         Py_DECREF(key);
         return NULL;

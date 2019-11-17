@@ -231,7 +231,7 @@ hashtable_hash_pyobject(_Py_hashtable_t *ht, const void *pkey)
     PyObject *obj;
 
     _Py_HASHTABLE_READ_KEY(ht, pkey, obj);
-    return PyObject_Hash(obj);
+    return PyObject_Hash(obj, 1);
 }
 
 
@@ -430,7 +430,7 @@ traceback_hash(traceback_t *traceback)
     x = 0x345678UL;
     frame = traceback->frames;
     while (--len >= 0) {
-        y = (Py_uhash_t)PyObject_Hash(frame->filename);
+        y = (Py_uhash_t)PyObject_Hash(frame->filename, 1);
         y ^= (Py_uhash_t)frame->lineno;
         frame++;
 

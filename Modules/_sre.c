@@ -2657,7 +2657,7 @@ pattern_hash(PatternObject *self)
 {
     Py_hash_t hash, hash2;
 
-    hash = PyObject_Hash(self->pattern);
+    hash = PyObject_Hash(self->pattern, 1);
     if (hash == -1) {
         return -1;
     }

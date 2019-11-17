@@ -1427,7 +1427,7 @@ builtin_hash(PyObject *module, PyObject *args, PyObject *kwds)
         return NULL;
     Py_hash_t x;
 
-    x = PyObject_Hash(obj);
+    x = PyObject_Hash(obj, use_seed);
     if (x == -1)
         return NULL;
     return PyLong_FromSsize_t(x);

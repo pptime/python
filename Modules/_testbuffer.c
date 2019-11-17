@@ -2614,7 +2614,7 @@ ndarray_hash(PyObject *self)
              "cannot hash writable ndarray object");
          return -1;
     }
-    if (view->obj != NULL && PyObject_Hash(view->obj) == -1) {
+    if (view->obj != NULL && PyObject_Hash(view->obj, 1) == -1) {
          return -1;
     }
 
@@ -2623,7 +2623,7 @@ ndarray_hash(PyObject *self)
         return -1;
     }
 
-    hash = PyObject_Hash(bytes);
+    hash = PyObject_Hash(bytes, 1);
     Py_DECREF(bytes);
     return hash;
 }

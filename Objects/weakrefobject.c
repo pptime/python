@@ -149,7 +149,7 @@ weakref_hash(PyWeakReference *self)
         PyErr_SetString(PyExc_TypeError, "weak object has gone away");
         return -1;
     }
-    self->hash = PyObject_Hash(PyWeakref_GET_OBJECT(self));
+    self->hash = PyObject_Hash(PyWeakref_GET_OBJECT(self), 1);
     return self->hash;
 }
 

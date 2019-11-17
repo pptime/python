@@ -265,7 +265,7 @@ random_seed(RandomObject *self, PyObject *args)
         n = PyLong_Type.tp_as_number->nb_absolute(arg);
     }
     else {
-        Py_hash_t hash = PyObject_Hash(arg);
+        Py_hash_t hash = PyObject_Hash(arg, 1);
         if (hash == -1)
             goto Done;
         n = PyLong_FromSize_t((size_t)hash);

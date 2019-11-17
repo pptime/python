@@ -614,7 +614,7 @@ _odict_find_node(PyODictObject *od, PyObject *key)
 
     if (_odict_EMPTY(od))
         return NULL;
-    hash = PyObject_Hash(key);
+    hash = PyObject_Hash(key, 1);
     if (hash == -1)
         return NULL;
     index = _odict_get_index(od, key, hash);
@@ -1137,7 +1137,7 @@ _odict_popkey_hash(PyObject *od, PyObject *key, PyObject *failobj,
 static PyObject *
 _odict_popkey(PyObject *od, PyObject *key, PyObject *failobj)
 {
-    Py_hash_t hash = PyObject_Hash(key);
+    Py_hash_t hash = PyObject_Hash(key, 1);
     if (hash == -1)
         return NULL;
 
@@ -1715,7 +1715,7 @@ _PyODict_SetItem_KnownHash(PyObject *od, PyObject *key, PyObject *value,
 int
 PyODict_SetItem(PyObject *od, PyObject *key, PyObject *value)
 {
-    Py_hash_t hash = PyObject_Hash(key);
+    Py_hash_t hash = PyObject_Hash(key, 1);
     if (hash == -1)
         return -1;
     return _PyODict_SetItem_KnownHash(od, key, value, hash);
@@ -1725,7 +1725,7 @@ int
 PyODict_DelItem(PyObject *od, PyObject *key)
 {
     int res;
-    Py_hash_t hash = PyObject_Hash(key);
+    Py_hash_t hash = PyObject_Hash(key, 1);
     if (hash == -1)
         return -1;
     res = _odict_clear_node((PyODictObject *)od, NULL, key, hash);

@@ -1072,7 +1072,7 @@ wrapper_hash(wrapperobject *wp)
     x = _Py_HashPointer(wp->descr);
     if (x == -1)
         return -1;
-    y = PyObject_Hash(wp->self);
+    y = PyObject_Hash(wp->self, 1);
     if (y == -1)
         return -1;
     x = x ^ y;

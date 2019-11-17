@@ -2310,7 +2310,7 @@ _count_elements(PyObject *self, PyObject *args)
             if (!PyUnicode_CheckExact(key) ||
                 (hash = ((PyASCIIObject *) key)->hash) == -1)
             {
-                hash = PyObject_Hash(key);
+                hash = PyObject_Hash(key, 1);
                 if (hash == -1)
                     goto done;
             }

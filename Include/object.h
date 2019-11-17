@@ -551,7 +551,7 @@ PyAPI_FUNC(int) PyObject_GenericSetAttr(PyObject *,
 #if !defined(Py_LIMITED_API) || Py_LIMITED_API+0 >= 0x03030000
 PyAPI_FUNC(int) PyObject_GenericSetDict(PyObject *, PyObject *, void *);
 #endif
-PyAPI_FUNC(Py_hash_t) PyObject_Hash(PyObject *);
+PyAPI_FUNC(Py_hash_t) PyObject_Hash(PyObject *, int);
 PyAPI_FUNC(Py_hash_t) PyObject_HashNotImplemented(PyObject *);
 PyAPI_FUNC(int) PyObject_IsTrue(PyObject *);
 PyAPI_FUNC(int) PyObject_Not(PyObject *);

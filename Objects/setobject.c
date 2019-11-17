@@ -413,7 +413,7 @@ set_add_key(PySetObject *so, PyObject *key)
 
     if (!PyUnicode_CheckExact(key) ||
         (hash = ((PyASCIIObject *) key)->hash) == -1) {
-        hash = PyObject_Hash(key);
+        hash = PyObject_Hash(key, 1);
         if (hash == -1)
             return -1;
     }
@@ -427,7 +427,7 @@ set_contains_key(PySetObject *so, PyObject *key)
 
     if (!PyUnicode_CheckExact(key) ||
         (hash = ((PyASCIIObject *) key)->hash) == -1) {
-        hash = PyObject_Hash(key);
+        hash = PyObject_Hash(key, 1);
         if (hash == -1)
             return -1;
     }
@@ -441,7 +441,7 @@ set_discard_key(PySetObject *so, PyObject *key)
 
     if (!PyUnicode_CheckExact(key) ||
         (hash = ((PyASCIIObject *) key)->hash) == -1) {
-        hash = PyObject_Hash(key);
+        hash = PyObject_Hash(key, 1);
         if (hash == -1)
             return -1;
     }
@@ -1302,7 +1302,7 @@ set_intersection(PySetObject *so, PyObject *other)
     }
 
     while ((key = PyIter_Next(it)) != NULL) {
-        hash = PyObject_Hash(key);
+        hash = PyObject_Hash(key, 1);
         if (hash == -1)
             goto error;
         rv = set_contains_entry(so, key, hash);
@@ -1444,7 +1444,7 @@ set_isdisjoint(PySetObject *so, PyObject *other)
         return NULL;
 
     while ((key = PyIter_Next(it)) != NULL) {
-        Py_hash_t hash = PyObject_Hash(key);
+        Py_hash_t hash = PyObject_Hash(key, 1);
 
         if (hash == -1) {
             Py_DECREF(key);

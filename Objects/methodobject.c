@@ -468,7 +468,7 @@ meth_hash(PyCFunctionObject *a)
     if (a->m_self == NULL)
         x = 0;
     else {
-        x = PyObject_Hash(a->m_self);
+        x = PyObject_Hash(a->m_self, 1);
         if (x == -1)
             return -1;
     }

@@ -1945,7 +1945,7 @@ delta_hash(PyDateTime_Delta *self)
     if (self->hashcode == -1) {
         PyObject *temp = delta_getstate(self);
         if (temp != NULL) {
-            self->hashcode = PyObject_Hash(temp);
+            self->hashcode = PyObject_Hash(temp, 1);
             Py_DECREF(temp);
         }
     }
@@ -4004,7 +4004,7 @@ time_hash(PyDateTime_Time *self)
                 Py_DECREF(offset);
                 return -1;
             }
-            self->hashcode = PyObject_Hash(temp2);
+            self->hashcode = PyObject_Hash(temp2, 1);
             Py_DECREF(temp2);
         }
         Py_DECREF(offset);
@@ -5138,7 +5138,7 @@ datetime_hash(PyDateTime_DateTime *self)
                 Py_DECREF(offset);
                 return -1;
             }
-            self->hashcode = PyObject_Hash(temp2);
+            self->hashcode = PyObject_Hash(temp2, 1);
             Py_DECREF(temp2);
         }
         Py_DECREF(offset);

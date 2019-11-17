@@ -189,7 +189,7 @@ static PyObject* pysqlite_iter(pysqlite_Row* self)
 
 static Py_hash_t pysqlite_row_hash(pysqlite_Row *self)
 {
-    return PyObject_Hash(self->description) ^ PyObject_Hash(self->data);
+    return PyObject_Hash(self->description, 1) ^ PyObject_Hash(self->data, 1);
 }
 
 static PyObject* pysqlite_row_richcompare(pysqlite_Row *self, PyObject *_other, int opid)

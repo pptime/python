@@ -795,7 +795,7 @@ PyObject_HashNotImplemented(PyObject *v)
 }
 
 Py_hash_t
-PyObject_Hash(PyObject *v)
+PyObject_Hash(PyObject *v, int use_seed)
 {
     PyTypeObject *tp = Py_TYPE(v);
     if (tp->tp_hash != NULL)

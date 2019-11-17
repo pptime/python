@@ -709,19 +709,19 @@ static Py_hash_t
 code_hash(PyCodeObject *co)
 {
     Py_hash_t h, h0, h1, h2, h3, h4, h5, h6;
-    h0 = PyObject_Hash(co->co_name);
+    h0 = PyObject_Hash(co->co_name, 1);
     if (h0 == -1) return -1;
-    h1 = PyObject_Hash(co->co_code);
+    h1 = PyObject_Hash(co->co_code, 1);
     if (h1 == -1) return -1;
-    h2 = PyObject_Hash(co->co_consts);
+    h2 = PyObject_Hash(co->co_consts, 1);
     if (h2 == -1) return -1;
-    h3 = PyObject_Hash(co->co_names);
+    h3 = PyObject_Hash(co->co_names, 1);
     if (h3 == -1) return -1;
-    h4 = PyObject_Hash(co->co_varnames);
+    h4 = PyObject_Hash(co->co_varnames, 1);
     if (h4 == -1) return -1;
-    h5 = PyObject_Hash(co->co_freevars);
+    h5 = PyObject_Hash(co->co_freevars, 1);
     if (h5 == -1) return -1;
-    h6 = PyObject_Hash(co->co_cellvars);
+    h6 = PyObject_Hash(co->co_cellvars, 1);
     if (h6 == -1) return -1;
     h = h0 ^ h1 ^ h2 ^ h3 ^ h4 ^ h5 ^ h6 ^
         co->co_argcount ^ co->co_kwonlyargcount ^

@@ -2846,7 +2846,7 @@ memory_hash(PyMemoryViewObject *self)
                 "memoryview: hashing is restricted to formats 'B', 'b' or 'c'");
             return -1;
         }
-        if (view->obj != NULL && PyObject_Hash(view->obj) == -1) {
+        if (view->obj != NULL && PyObject_Hash(view->obj, 1) == -1) {
             /* Keep the original error message */
             return -1;
         }
