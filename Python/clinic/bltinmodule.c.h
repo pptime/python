@@ -418,7 +418,7 @@ exit:
 }
 
 PyDoc_STRVAR(builtin_hash__doc__,
-"hash($module, obj, seed=None, /)\n"
+"hash($module, obj, use_seed=True, /)\n"
 "--\n"
 "\n"
 "Return the hash value for the given object.\n"

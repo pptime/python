@@ -1417,12 +1417,13 @@ static PyObject *
 builtin_hash(PyObject *module, PyObject *args, PyObject *kwds)
 /*[clinic end generated code: output=237668e9d7688db7 input=58c48be822bf9c54]*/
 {
-    PyObject * obj, *seed = NULL;
+    PyObject * obj;
+    int use_seed = 1;
 
-    static char *kwlist[] = {"object", "seed", 0};
+    static char *kwlist[] = {"object", "use_seed", 0};
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwds, "O|O:hash",
-                                     kwlist, &obj, &seed))
+    if (!PyArg_ParseTupleAndKeywords(args, kwds, "O|i:hash",
+                                     kwlist, &obj, &use_seed))
         return NULL;
     Py_hash_t x;
 
