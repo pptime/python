@@ -751,7 +751,7 @@ _shuffle_bits(Py_uhash_t h)
    graph recipes in Lib/test/test_set.py) */
 
 static Py_hash_t
-frozenset_hash(PyObject *self)
+frozenset_hash(PyObject *self, int use_seed)
 {
     PySetObject *so = (PySetObject *)self;
     Py_uhash_t hash = 0;

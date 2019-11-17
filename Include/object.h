@@ -330,7 +330,7 @@ typedef PyObject *(*getattrofunc)(PyObject *, PyObject *);
 typedef int (*setattrfunc)(PyObject *, char *, PyObject *);
 typedef int (*setattrofunc)(PyObject *, PyObject *, PyObject *);
 typedef PyObject *(*reprfunc)(PyObject *);
-typedef Py_hash_t (*hashfunc)(PyObject *);
+typedef Py_hash_t (*hashfunc)(PyObject *, int use_seed);
 typedef PyObject *(*richcmpfunc) (PyObject *, PyObject *, int);
 typedef PyObject *(*getiterfunc) (PyObject *);
 typedef PyObject *(*iternextfunc) (PyObject *);
@@ -552,7 +552,7 @@ PyAPI_FUNC(int) PyObject_GenericSetAttr(PyObject *,
 PyAPI_FUNC(int) PyObject_GenericSetDict(PyObject *, PyObject *, void *);
 #endif
 PyAPI_FUNC(Py_hash_t) PyObject_Hash(PyObject *, int);
-PyAPI_FUNC(Py_hash_t) PyObject_HashNotImplemented(PyObject *);
+PyAPI_FUNC(Py_hash_t) PyObject_HashNotImplemented(PyObject *, int);
 PyAPI_FUNC(int) PyObject_IsTrue(PyObject *);
 PyAPI_FUNC(int) PyObject_Not(PyObject *);
 PyAPI_FUNC(int) PyCallable_Check(PyObject *);

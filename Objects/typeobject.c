@@ -5548,7 +5548,7 @@ wrap_hashfunc(PyObject *self, PyObject *args, void *wrapped)
 
     if (!check_num_args(args, 0))
         return NULL;
-    res = (*func)(self);
+    res = (*func)(self, 1);
     if (res == -1 && PyErr_Occurred())
         return NULL;
     return PyLong_FromSsize_t(res);
@@ -6161,7 +6161,7 @@ slot_tp_hash(PyObject *self)
     }
 
     if (func == NULL) {
-        return PyObject_HashNotImplemented(self);
+        return PyObject_HashNotImplemented(self, 1);
     }
 
     res = PyEval_CallObject(func, NULL);
@@ -6185,7 +6185,7 @@ slot_tp_hash(PyObject *self)
            use any sufficiently bit-mixing transformation;
            long.__hash__ will do nicely. */
         PyErr_Clear();
-        h = PyLong_Type.tp_hash(res);
+        h = PyLong_Type.tp_hash(res, 1);
     }
     /* -1 is reserved for errors. */
     if (h == -1)

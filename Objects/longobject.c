@@ -2958,7 +2958,7 @@ long_richcompare(PyObject *self, PyObject *other, int op)
 }
 
 static Py_hash_t
-long_hash(PyLongObject *v)
+long_hash(PyLongObject *v, int use_seed)
 {
     Py_uhash_t x;
     Py_ssize_t i;

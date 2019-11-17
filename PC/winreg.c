@@ -176,7 +176,7 @@ PyHKEY_compareFunc(PyObject *ob1, PyObject *ob2)
 }
 
 static Py_hash_t
-PyHKEY_hashFunc(PyObject *ob)
+PyHKEY_hashFunc(PyObject *ob, int use_seed)
 {
     /* Just use the address.
        XXX - should we use the handle value?

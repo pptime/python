@@ -503,7 +503,7 @@ range_richcompare(PyObject *self, PyObject *other, int op)
    return hash((len(r), r.start, r.step))
 */
 static Py_hash_t
-range_hash(rangeobject *r)
+range_hash(rangeobject *r, int use_seed)
 {
     PyObject *t;
     Py_hash_t result = -1;
@@ -543,7 +543,7 @@ range_hash(rangeobject *r)
             PyTuple_SET_ITEM(t, 2, r->step);
         }
     }
-    result = PyObject_Hash(t, 1);
+    result = PyObject_Hash(t, use_seed);
   end:
     Py_DECREF(t);
     return result;

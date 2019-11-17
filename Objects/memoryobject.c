@@ -2825,7 +2825,7 @@ result:
 /**************************************************************************/
 
 static Py_hash_t
-memory_hash(PyMemoryViewObject *self)
+memory_hash(PyMemoryViewObject *self, int use_seed)
 {
     if (self->hash == -1) {
         Py_buffer *view = &self->view;
@@ -2846,7 +2846,7 @@ memory_hash(PyMemoryViewObject *self)
                 "memoryview: hashing is restricted to formats 'B', 'b' or 'c'");
             return -1;
         }
-        if (view->obj != NULL && PyObject_Hash(view->obj, 1) == -1) {
+        if (view->obj != NULL && PyObject_Hash(view->obj, use_seed) == -1) {
             /* Keep the original error message */
             return -1;
         }
@@ -2864,7 +2864,7 @@ memory_hash(PyMemoryViewObject *self)
         }
 
         /* Can't fail */
-        self->hash = _Py_HashBytes(mem, view->len);
+        self->hash = _Py_HashBytes(mem, view->len, use_seed);
 
         if (mem != view->buf)
             PyMem_Free(mem);

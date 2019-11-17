@@ -385,13 +385,13 @@ complex_repr(PyComplexObject *v)
 }
 
 static Py_hash_t
-complex_hash(PyComplexObject *v)
+complex_hash(PyComplexObject *v, int use_seed)
 {
     Py_uhash_t hashreal, hashimag, combined;
-    hashreal = (Py_uhash_t)_Py_HashDouble(v->cval.real);
+    hashreal = (Py_uhash_t)_Py_HashDouble(v->cval.real, use_seed);
     if (hashreal == (Py_uhash_t)-1)
         return -1;
-    hashimag = (Py_uhash_t)_Py_HashDouble(v->cval.imag);
+    hashimag = (Py_uhash_t)_Py_HashDouble(v->cval.imag, use_seed);
     if (hashimag == (Py_uhash_t)-1)
         return -1;
     /* Note:  if the imaginary part is 0, hashimag is 0 now,

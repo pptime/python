@@ -272,7 +272,7 @@ method_repr(PyMethodObject *a)
 }
 
 static Py_hash_t
-method_hash(PyMethodObject *a)
+method_hash(PyMethodObject *a, int use_seed)
 {
     Py_hash_t x, y;
     if (a->im_self == NULL)

@@ -83,7 +83,7 @@ static Py_ssize_t hashstats[Py_HASH_STATS_MAX + 1] = {0};
    */
 
 Py_hash_t
-_Py_HashDouble(double v)
+_Py_HashDouble(double v, int use_seed)
 {
     int e, sign;
     double m;
@@ -129,7 +129,7 @@ _Py_HashDouble(double v)
 }
 
 Py_hash_t
-_Py_HashPointer(void *p)
+_Py_HashPointer(void *p, int use_seed)
 {
     Py_hash_t x;
     size_t y = (size_t)p;
@@ -143,7 +143,7 @@ _Py_HashPointer(void *p)
 }
 
 Py_hash_t
-_Py_HashBytes(const void *src, Py_ssize_t len)
+_Py_HashBytes(const void *src, Py_ssize_t len, int use_seed)
 {
     Py_hash_t x;
     /*
@@ -178,12 +178,15 @@ _Py_HashBytes(const void *src, Py_ssize_t len)
                 assert(0);
         }
         hash ^= len;
-        hash ^= (Py_uhash_t) _Py_HashSecret.djbx33a.suffix;
+        if (use_seed)
+            hash ^= (Py_uhash_t) _Py_HashSecret.djbx33a.suffix;
+        else
+            hash ^= 0;
         x = (Py_hash_t)hash;
     }
     else
 #endif /* Py_HASH_CUTOFF */
-        x = PyHash_Func.hash(src, len);
+        x = PyHash_Func.hash(src, len, use_seed);
 
     if (x == -1)
         return -2;
@@ -239,7 +242,7 @@ PyHash_GetFuncDef(void)
  * Modified Fowler-Noll-Vo (FNV) hash function
  */
 static Py_hash_t
-fnv(const void *src, Py_ssize_t len)
+fnv(const void *src, Py_ssize_t len, int use_seed)
 {
     const unsigned char *p = src;
     Py_uhash_t x;
@@ -260,7 +263,10 @@ fnv(const void *src, Py_ssize_t len)
     }
     blocks = (len - remainder) / SIZEOF_PY_UHASH_T;
 
-    x = (Py_uhash_t) _Py_HashSecret.fnv.prefix;
+    if(use_seed)
+        x = (Py_uhash_t) _Py_HashSecret.fnv.prefix;
+    else
+        x = (Py_uhash_t) 0;
     x ^= (Py_uhash_t) *p << 7;
     while (blocks--) {
         PY_UHASH_CPY(block.bytes, p);
@@ -271,7 +277,10 @@ fnv(const void *src, Py_ssize_t len)
     for (; remainder > 0; remainder--)
         x = (_PyHASH_MULTIPLIER * x) ^ (Py_uhash_t) *p++;
     x ^= (Py_uhash_t) len;
-    x ^= (Py_uhash_t) _Py_HashSecret.fnv.suffix;
+    if (use_seed)
+        x ^= (Py_uhash_t) _Py_HashSecret.fnv.suffix;
+    else
+        x ^= (Py_uhash_t) 0;
     if (x == (Py_uhash_t) -1) {
         x = (Py_uhash_t) -2;
     }
@@ -365,9 +374,13 @@ static PyHash_FuncDef PyHash_Func = {fnv, "fnv", 8 * SIZEOF_PY_HASH_T,
 
 
 static Py_hash_t
-siphash24(const void *src, Py_ssize_t src_sz) {
-    uint64_t k0 = _le64toh(_Py_HashSecret.siphash.k0);
-    uint64_t k1 = _le64toh(_Py_HashSecret.siphash.k1);
+siphash24(const void *src, Py_ssize_t src_sz, int use_seed) {
+    uint64_t k0 = _le64toh(0);
+    uint64_t k1 = _le64toh(0);
+    if (use_seed){
+        k0 = _le64toh(_Py_HashSecret.siphash.k0);
+        k1 = _le64toh(_Py_HashSecret.siphash.k1);
+    }
     uint64_t b = (uint64_t)src_sz << 56;
     const uint8_t *in = (uint8_t*)src;
 

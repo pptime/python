@@ -1652,11 +1652,11 @@ bytes_richcompare(PyBytesObject *a, PyBytesObject *b, int op)
 }
 
 static Py_hash_t
-bytes_hash(PyBytesObject *a)
+bytes_hash(PyBytesObject *a, int use_seed)
 {
     if (a->ob_shash == -1) {
         /* Can't fail */
-        a->ob_shash = _Py_HashBytes(a->ob_sval, Py_SIZE(a));
+        a->ob_shash = _Py_HashBytes(a->ob_sval, Py_SIZE(a), use_seed);
     }
     return a->ob_shash;
 }

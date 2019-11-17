@@ -342,7 +342,7 @@ error:
 */
 
 static Py_hash_t
-tuplehash(PyTupleObject *v)
+tuplehash(PyTupleObject *v, int use_seed)
 {
     Py_uhash_t x;  /* Unsigned for defined overflow behavior. */
     Py_hash_t y;
@@ -352,7 +352,7 @@ tuplehash(PyTupleObject *v)
     x = 0x345678UL;
     p = v->ob_item;
     while (--len >= 0) {
-        y = PyObject_Hash(*p++, 1);
+        y = PyObject_Hash(*p++, use_seed);
         if (y == -1)
             return -1;
         x = (x ^ y) * mult;

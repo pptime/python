@@ -787,7 +787,7 @@ PyObject_RichCompareBool(PyObject *v, PyObject *w, int op)
 }
 
 Py_hash_t
-PyObject_HashNotImplemented(PyObject *v)
+PyObject_HashNotImplemented(PyObject *v, int use_seed)
 {
     PyErr_Format(PyExc_TypeError, "unhashable type: '%.200s'",
                  Py_TYPE(v)->tp_name);
@@ -799,7 +799,7 @@ PyObject_Hash(PyObject *v, int use_seed)
 {
     PyTypeObject *tp = Py_TYPE(v);
     if (tp->tp_hash != NULL)
-        return (*tp->tp_hash)(v);
+        return (*tp->tp_hash)(v, use_seed);
     /* To keep to the general practice that inheriting
      * solely from object in C code should work without
      * an explicit call to PyType_Ready, we implicitly call
@@ -809,10 +809,10 @@ PyObject_Hash(PyObject *v, int use_seed)
         if (PyType_Ready(tp) < 0)
             return -1;
         if (tp->tp_hash != NULL)
-            return (*tp->tp_hash)(v);
+            return (*tp->tp_hash)(v, use_seed);
     }
     /* Otherwise, the object can't be hashed */
-    return PyObject_HashNotImplemented(v);
+    return PyObject_HashNotImplemented(v, use_seed);
 }
 
 PyObject *

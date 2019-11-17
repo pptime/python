@@ -141,7 +141,7 @@ weakref_call(PyWeakReference *self, PyObject *args, PyObject *kw)
 
 
 static Py_hash_t
-weakref_hash(PyWeakReference *self)
+weakref_hash(PyWeakReference *self, int use_seed)
 {
     if (self->hash != -1)
         return self->hash;
@@ -149,7 +149,7 @@ weakref_hash(PyWeakReference *self)
         PyErr_SetString(PyExc_TypeError, "weak object has gone away");
         return -1;
     }
-    self->hash = PyObject_Hash(PyWeakref_GET_OBJECT(self), 1);
+    self->hash = PyObject_Hash(PyWeakref_GET_OBJECT(self), use_seed);
     return self->hash;
 }
 

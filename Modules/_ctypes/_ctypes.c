@@ -2647,7 +2647,7 @@ static PyBufferProcs PyCData_as_buffer = {
  * CData objects are mutable, so they cannot be hashable!
  */
 static Py_hash_t
-PyCData_nohash(PyObject *self)
+PyCData_nohash(PyObject *self, int use_seed)
 {
     PyErr_SetString(PyExc_TypeError, "unhashable type");
     return -1;

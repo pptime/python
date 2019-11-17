@@ -2653,16 +2653,16 @@ pattern_scanner(PatternObject *self, PyObject *string, Py_ssize_t pos, Py_ssize_
 }
 
 static Py_hash_t
-pattern_hash(PatternObject *self)
+pattern_hash(PatternObject *self, int use_seed)
 {
     Py_hash_t hash, hash2;
 
-    hash = PyObject_Hash(self->pattern, 1);
+    hash = PyObject_Hash(self->pattern, use_seed);
     if (hash == -1) {
         return -1;
     }
 
-    hash2 = _Py_HashBytes(self->code, sizeof(self->code[0]) * self->codesize);
+    hash2 = _Py_HashBytes(self->code, sizeof(self->code[0]) * self->codesize, use_seed);
     hash ^= hash2;
 
     hash ^= self->flags;

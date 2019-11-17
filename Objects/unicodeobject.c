@@ -11827,7 +11827,7 @@ unicode_getitem(PyObject *self, Py_ssize_t index)
 /* Believe it or not, this produces the same value for ASCII strings
    as bytes_hash(). */
 static Py_hash_t
-unicode_hash(PyObject *self)
+unicode_hash(PyObject *self, int use_seed)
 {
     Py_ssize_t len;
     Py_uhash_t x;  /* Unsigned for defined overflow behavior. */
@@ -11835,22 +11835,27 @@ unicode_hash(PyObject *self)
 #ifdef Py_DEBUG
     assert(_Py_HashSecret_Initialized);
 #endif
-    if (_PyUnicode_HASH(self) != -1)
-        return _PyUnicode_HASH(self);
-    if (PyUnicode_READY(self) == -1)
-        return -1;
-    len = PyUnicode_GET_LENGTH(self);
-    /*
-      We make the hash of the empty string be 0, rather than using
-      (prefix ^ suffix), since this slightly obfuscates the hash secret
-    */
-    if (len == 0) {
-        _PyUnicode_HASH(self) = 0;
-        return 0;
+    if (use_seed){
+        if (_PyUnicode_HASH(self) != -1)
+            return _PyUnicode_HASH(self);
+        if (PyUnicode_READY(self) == -1)
+            return -1;
+        len = PyUnicode_GET_LENGTH(self);
+        /*
+        We make the hash of the empty string be 0, rather than using
+        (prefix ^ suffix), since this slightly obfuscates the hash secret
+        */
+        if (len == 0) {
+            _PyUnicode_HASH(self) = 0;
+            return 0;
+        }
     }
     x = _Py_HashBytes(PyUnicode_DATA(self),
-                      PyUnicode_GET_LENGTH(self) * PyUnicode_KIND(self));
-    _PyUnicode_HASH(self) = x;
+                      PyUnicode_GET_LENGTH(self) * PyUnicode_KIND(self),
+                      use_seed);
+    if (use_seed){
+        _PyUnicode_HASH(self) = x;
+    }
     return x;
 }
 

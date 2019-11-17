@@ -259,7 +259,7 @@ hashtable_hash_pointer_t(_Py_hashtable_t *ht, const void *pkey)
 
     _Py_HASHTABLE_READ_KEY(ht, pkey, ptr);
 
-    hash = (Py_uhash_t)_Py_HashPointer((void*)ptr.ptr);
+    hash = (Py_uhash_t)_Py_HashPointer((void*)ptr.ptr, 1);
     hash ^= ptr.domain;
     return hash;
 }

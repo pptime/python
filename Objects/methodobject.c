@@ -462,17 +462,17 @@ meth_richcompare(PyObject *self, PyObject *other, int op)
 }
 
 static Py_hash_t
-meth_hash(PyCFunctionObject *a)
+meth_hash(PyCFunctionObject *a, int use_seed)
 {
     Py_hash_t x, y;
     if (a->m_self == NULL)
         x = 0;
     else {
-        x = PyObject_Hash(a->m_self, 1);
+        x = PyObject_Hash(a->m_self, use_seed);
         if (x == -1)
             return -1;
     }
-    y = _Py_HashPointer((void*)(a->m_ml->ml_meth));
+    y = _Py_HashPointer((void*)(a->m_ml->ml_meth), use_seed);
     if (y == -1)
         return -1;
     x ^= y;

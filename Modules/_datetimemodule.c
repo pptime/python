@@ -1940,12 +1940,12 @@ delta_richcompare(PyObject *self, PyObject *other, int op)
 static PyObject *delta_getstate(PyDateTime_Delta *self);
 
 static Py_hash_t
-delta_hash(PyDateTime_Delta *self)
+delta_hash(PyDateTime_Delta *self, int use_seed)
 {
     if (self->hashcode == -1) {
         PyObject *temp = delta_getstate(self);
         if (temp != NULL) {
-            self->hashcode = PyObject_Hash(temp, 1);
+            self->hashcode = PyObject_Hash(temp, use_seed);
             Py_DECREF(temp);
         }
     }
@@ -2908,20 +2908,21 @@ date_replace(PyDateTime_Date *self, PyObject *args, PyObject *kw)
 }
 
 static Py_hash_t
-generic_hash(unsigned char *data, int len)
+generic_hash(unsigned char *data, int len, int use_seed)
 {
-    return _Py_HashBytes(data, len);
+    return _Py_HashBytes(data, len, use_seed);
 }
 
 
 static PyObject *date_getstate(PyDateTime_Date *self);
 
 static Py_hash_t
-date_hash(PyDateTime_Date *self)
+date_hash(PyDateTime_Date *self, int use_seed)
 {
     if (self->hashcode == -1) {
         self->hashcode = generic_hash(
-            (unsigned char *)self->data, _PyDateTime_DATE_DATASIZE);
+            (unsigned char *)self->data, _PyDateTime_DATE_DATASIZE,
+            use_seed);
     }
 
     return self->hashcode;
@@ -3367,9 +3368,9 @@ timezone_richcompare(PyDateTime_TimeZone *self,
 }
 
 static Py_hash_t
-timezone_hash(PyDateTime_TimeZone *self)
+timezone_hash(PyDateTime_TimeZone *self, int use_seed)
 {
-    return delta_hash((PyDateTime_Delta *)self->offset);
+    return delta_hash((PyDateTime_Delta *)self->offset, use_seed);
 }
 
 /* Check argument type passed to tzname, utcoffset, or dst methods.
@@ -3957,7 +3958,7 @@ time_richcompare(PyObject *self, PyObject *other, int op)
 }
 
 static Py_hash_t
-time_hash(PyDateTime_Time *self)
+time_hash(PyDateTime_Time *self, int use_seed)
 {
     if (self->hashcode == -1) {
         PyObject *offset, *self0;
@@ -3984,7 +3985,8 @@ time_hash(PyDateTime_Time *self)
         /* Reduce this to a hash of another object. */
         if (offset == Py_None)
             self->hashcode = generic_hash(
-                (unsigned char *)self->data, _PyDateTime_TIME_DATASIZE);
+                (unsigned char *)self->data, _PyDateTime_TIME_DATASIZE,
+                use_seed);
         else {
             PyObject *temp1, *temp2;
             int seconds, microseconds;
@@ -5083,7 +5085,7 @@ datetime_richcompare(PyObject *self, PyObject *other, int op)
 }
 
 static Py_hash_t
-datetime_hash(PyDateTime_DateTime *self)
+datetime_hash(PyDateTime_DateTime *self, int use_seed)
 {
     if (self->hashcode == -1) {
         PyObject *offset, *self0;
@@ -5113,7 +5115,8 @@ datetime_hash(PyDateTime_DateTime *self)
         /* Reduce this to a hash of another object. */
         if (offset == Py_None)
             self->hashcode = generic_hash(
-                (unsigned char *)self->data, _PyDateTime_DATETIME_DATASIZE);
+                (unsigned char *)self->data, _PyDateTime_DATETIME_DATASIZE,
+                use_seed);
         else {
             PyObject *temp1, *temp2;
             int days, seconds;

@@ -7,9 +7,9 @@ extern "C" {
 
 /* Helpers for hash functions */
 #ifndef Py_LIMITED_API
-PyAPI_FUNC(Py_hash_t) _Py_HashDouble(double);
-PyAPI_FUNC(Py_hash_t) _Py_HashPointer(void*);
-PyAPI_FUNC(Py_hash_t) _Py_HashBytes(const void*, Py_ssize_t);
+PyAPI_FUNC(Py_hash_t) _Py_HashDouble(double, int);
+PyAPI_FUNC(Py_hash_t) _Py_HashPointer(void*, int);
+PyAPI_FUNC(Py_hash_t) _Py_HashBytes(const void*, Py_ssize_t, int);
 #endif
 
 /* Prime multiplier used in string and various other hashes. */
@@ -85,7 +85,7 @@ PyAPI_DATA(int) _Py_HashSecret_Initialized;
 /* hash function definition */
 #ifndef Py_LIMITED_API
 typedef struct {
-    Py_hash_t (*const hash)(const void *, Py_ssize_t);
+    Py_hash_t (*const hash)(const void *, Py_ssize_t, int);
     const char *name;
     const int hash_bits;
     const int seed_bits;

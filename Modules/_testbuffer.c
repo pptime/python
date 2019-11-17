@@ -2602,7 +2602,7 @@ is_contiguous(PyObject *self, PyObject *args)
 }
 
 static Py_hash_t
-ndarray_hash(PyObject *self)
+ndarray_hash(PyObject *self, int use_seed)
 {
     const NDArrayObject *nd = (NDArrayObject *)self;
     const Py_buffer *view = &nd->head->base;
@@ -2614,7 +2614,7 @@ ndarray_hash(PyObject *self)
              "cannot hash writable ndarray object");
          return -1;
     }
-    if (view->obj != NULL && PyObject_Hash(view->obj, 1) == -1) {
+    if (view->obj != NULL && PyObject_Hash(view->obj, use_seed) == -1) {
          return -1;
     }
 
@@ -2623,7 +2623,7 @@ ndarray_hash(PyObject *self)
         return -1;
     }
 
-    hash = PyObject_Hash(bytes, 1);
+    hash = PyObject_Hash(bytes, use_seed);
     Py_DECREF(bytes);
     return hash;
 }

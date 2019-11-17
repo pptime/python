@@ -706,7 +706,7 @@ code_richcompare(PyObject *self, PyObject *other, int op)
 }
 
 static Py_hash_t
-code_hash(PyCodeObject *co)
+code_hash(PyCodeObject *co, int use_seed)
 {
     Py_hash_t h, h0, h1, h2, h3, h4, h5, h6;
     h0 = PyObject_Hash(co->co_name, 1);
